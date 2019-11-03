@@ -1,0 +1,16 @@
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Eclipse
+.buildpath
+.project
+.settings
+
+# PhpStorm
+.idea
+
+# Composer
+/vendor

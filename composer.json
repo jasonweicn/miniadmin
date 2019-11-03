@@ -1,0 +1,17 @@
+{
+    "name": "jasonweicn/miniadmin",
+    "description": "MiniFramework Backend Template",
+    "type": "project",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Jason Wei",
+            "email": "jasonwei06@hotmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.4.0",
+        "jasonweicn/miniframework": "^2.0.0"
+    }
+}
