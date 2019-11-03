@@ -6,9 +6,9 @@ MiniAdmin 是基于 MiniFramework 和 Layui 开发的一套后台基础模板。
 安装部署
 ====================
 
-[![Latest Stable Version]
-[![Total Downloads]
-[![Build Status]
+[![Latest Stable Version](https://img.shields.io/packagist/v/jasonweicn/miniadmin.svg)](https://packagist.org/packages/jasonweicn/miniadmin)
+[![Total Downloads](https://img.shields.io/packagist/dt/jasonweicn/miniadmin.svg)](https://packagist.org/packages/jasonweicn/miniadmin)
+[![Build Status](https://travis-ci.org/jasonweicn/miniadmin.svg?branch=master)](https://travis-ci.org/jasonweicn/miniadmin)
 
 通过 Composer 可以快速安装部署，命令如下：
 
