@@ -1,6 +1,6 @@
 <div class="layui-body">
-  <div style="padding: 15px;">
-    <fieldset class="layui-elem-field layui-field-title" style="margin-top: 20px;">
+  <div style="padding:15px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
       <legend>我的账号</legend>
     </fieldset>
     <form class="layui-form" method="post" action="">

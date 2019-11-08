@@ -54,7 +54,6 @@ class Login extends Action
             header('location:../login?errcode=1');
             die();
         }
-        echo 'aaa';
         $adminuser = new Adminuser();
         $res = $adminuser->login($post['username'], $post['password']);
         //dump($res);die();

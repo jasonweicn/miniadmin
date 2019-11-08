@@ -107,7 +107,7 @@ class Adminuser extends Model
         $this->useDb('default');
         $res = $this->table('ma_adminuser')->where('id=' . $id)->select('Row');
         if ($res) {
-            $res['status'] = $res['delete_mark'] == 1 ? '删除' : '正常';
+            $res['status'] = $res['delete_mark'] == 1 ? '冻结' : '正常';
         }
         
         return $res;
@@ -118,10 +118,14 @@ class Adminuser extends Model
      * 
      * @return int|boolean
      */
-    public function getCount()
+    public function getCount($where = null)
     {
         $this->useDb('default');
-        $res = $this->table('ma_adminuser')->field('COUNT(*) as num')->select('Row');
+        if (isset($where) && ! empty($where)) {
+            $res = $this->table('ma_adminuser')->where($where)->field('COUNT(*) as num')->select('Row');
+        } else {
+            $res = $this->table('ma_adminuser')->field('COUNT(*) as num')->select('Row');
+        }
         
         if ($res && isset($res['num'])){
             return $res['num'];
@@ -136,22 +140,63 @@ class Adminuser extends Model
      * @param int $page
      * @return string|array
      */
-    public function getList($page = 1)
+    public function getList($page = 1, $limit = PAGE_SIZE, $where = null)
     {
         $page = is_int($page) ? $page : 1;
-        $offset = $page == 1 ? 0 : $page * PAGE_SIZE - 1;
+        $offset = $page == 1 ? 0 : ($page - 1) * $limit;
         $this->useDb('default');
-        $res = $this->table('ma_adminuser')->order(array('id' => 'ASC'))->limit($offset, PAGE_SIZE)->select();
+        if (isset($where) && ! empty($where)) {
+            $res = $this->table('ma_adminuser')->where($where)->order(array('id' => 'ASC'))->limit($offset, $limit)->select();
+        } else {
+            $res = $this->table('ma_adminuser')->order(array('id' => 'ASC'))->limit($offset, $limit)->select();
+        }
+        
         if ($res) {
             foreach ($res as $key => $val) {
-                $res[$key]['status'] = $val['delete_mark'] == 1 ? '删除' : '正常';
+                $res[$key]['status'] = $val['delete_mark'] == 1 ? '冻结' : '正常';
             }
         }
         return $res;
     }
     
+    public function getProfile($search_field, $search_value, $field = '*')
+    {
+        if (empty($search_field) || empty($search_value)) {
+            return false;
+        }
+        
+        $this->useDb('default');
+        $res = $this->table('ma_adminuser')->field($field)->where('`'.$search_field.'`="' . $search_value . '"')->select('Row');
+        if (! $res) {
+            return false;
+        }
+        
+        return $res;
+    }
+    
     /**
-     * 删除（逻辑删除）
+     * 新增账号
+     * 
+     * @param array $data
+     * @return boolean|number
+     */
+    public function addProfile($data)
+    {
+        if (empty($data)) {
+            return false;
+        }
+        $data['encrypt'] = getRandomString(8);
+        $data['password'] = md5($data['password'] . $data['encrypt']);
+        $data['create_time'] = date('Y-m-d H:i:s');
+        
+        $this->useDb('default');
+        $res = $this->table('ma_adminuser')->data($data)->add();
+        
+        return $res;
+    }
+    
+    /**
+     * 冻结（逻辑删除）
      * 
      * @param int $id
      * @return number
@@ -162,6 +207,23 @@ class Adminuser extends Model
         $data = array(
             'delete_mark' => 1,
             'delete_time' => date('Y-m-d H:i:s')
+        );
+        $res = $this->table('ma_adminuser')->data($data)->where('id='.$id)->save();
+        
+        return $res;
+    }
+    
+    /**
+     * 恢复
+     * 
+     * @param int $id
+     * @return number
+     */
+    public function recover($id)
+    {
+        $this->useDb('default');
+        $data = array(
+            'delete_mark' => 0
         );
         $res = $this->table('ma_adminuser')->data($data)->where('id='.$id)->save();
         
