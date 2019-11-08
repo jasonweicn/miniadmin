@@ -15,6 +15,8 @@ MiniAdmin 是基于 MiniFramework 和 Layui 开发的一套后台基础模板。
 php composer.phar create-project --prefer-dist --stability=dev jasonweicn/miniadmin
 ```
 
+最后请将 miniadmin.sql 导入你的数据库中，登录用户名为：admin，密码为：123456
+
 参与开发
 ====================
 
