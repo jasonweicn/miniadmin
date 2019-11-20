@@ -20,29 +20,30 @@
       <button id="addBtn" type="button" class="layui-btn layui-btn-sm">
         <i class="layui-icon layui-icon-add-circle"></i> 新增
       </button>
-      <button type="button" class="layui-btn layui-btn-sm">
+      <button id="refreshBtn" type="button" class="layui-btn layui-btn-sm">
         <i class="layui-icon layui-icon-refresh"></i> 刷新
       </button>
     </blockquote>
-    <table id="adminuser-list" lay-filter="adminuser-list-event"></table>
+    <table id="data-list" lay-filter="data-list-event"></table>
   </div>
 </div>
 <?php $this->beginBlock('jscode');?>
 <script type="text/html" id="statusTpl">
-  {{# if(d.delete_mark == 1) { }}
-    <span style="color: #C00;">{{ d.status }}</span>
+  {{# if(d.disable == 1) { }}
+    <span style="color:#FF5722;">{{ d.status }}</span>
   {{# } else { }}
-    {{ d.status }}
+    <span style="color:#009688">{{ d.status }}</span>
   {{# } }}
 </script>
 <script type="text/html" id="listBar">
   <a class="layui-btn layui-btn-xs" lay-event="detail">详情</a>
   <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
-  {{# if (d.delete_mark == 1) { }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="recover">恢复</a>
+  {{# if (d.disable == 1) { }}
+    <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="enable">启用</a>
   {{# } else { }}
-    <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">冻结</a>
+    <a class="layui-btn layui-btn-warm layui-btn-xs" lay-event="disable">禁用</a>
   {{# } }}
+  <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
 <script>
 layui.use(['table'], function () {
@@ -50,7 +51,7 @@ layui.use(['table'], function () {
 
   // 渲染表格
   var listTable = table.render({
-    elem: "#adminuser-list",
+    elem: "#data-list",
     url: '<?php echo $this->baseUrl();?>/adminuser/listdata',
     page: true,
     cols: [[
@@ -59,7 +60,7 @@ layui.use(['table'], function () {
       {field: 'nickname', title: '昵称', minWidth: 100},
       {field: 'login_time', title: '最后登录时间', minWidth: 120, sort: true},
       {field: 'status', title: '状态', minWidth: 60, templet: '#statusTpl'},
-      {title: '操作', toolbar: '#listBar', minWidth: 120},
+      {title: '操作', toolbar: '#listBar', width: 210},
     ]]
   });
 
@@ -93,8 +94,18 @@ layui.use(['table'], function () {
     });
   });
 
+  // 刷新按钮点击事件
+  $("#refreshBtn").click(function () {
+    listTable.reload({
+      where: {
+        searchfield: $("select[name='searchfield']").val(),
+        keyword: $("input[name='keyword']").val()
+      }
+    });
+  });
+
   // 表格事件
-  table.on('tool(adminuser-list-event)', function (obj) {
+  table.on('tool(data-list-event)', function (obj) {
     var data = obj.data;
     var curEvent = obj.event;
     if (curEvent === 'detail') {
@@ -125,20 +136,20 @@ layui.use(['table'], function () {
           }, 300);
         }
       });
-    } else if (curEvent === 'del') { //删除
+    } else if (curEvent === 'disable') { //禁用（逻辑删除）
       if (data.id == 1) {
-        layer.alert('超级管理员为系统默认账号，不可冻结！', {icon:0,anim:5,offset:'100px'});
+        layer.alert('您选择的是系统默认用户，不可禁用！', {icon:0,anim:5,offset:'100px'});
         return false;
       }
-      layer.confirm('确认要冻结用户 ' + data.username + ' 吗？', function (index) {
+      layer.confirm('确认要禁用 ' + data.username + ' 吗？', function (index) {
         layer.close(index);
         $.ajax({
           type: 'get',
-          url: '<?php echo $this->baseUrl();?>/adminuser/del?id=' + data.id,
+          url: '<?php echo $this->baseUrl();?>/adminuser/disable?id=' + data.id,
           dataType: 'json',
           success: function (data) {
             if (data.suc == 1) {
-              layer.alert('冻结成功', {icon:1,anim:5,time:3000,offset:'100px'});
+              layer.alert('禁用成功', {icon:1,anim:5,time:3000,offset:'100px'});
               listTable.reload({
                 where: {
                   searchfield: $("select[name='searchfield']").val(),
@@ -154,26 +165,50 @@ layui.use(['table'], function () {
           }
         });
       });
-    } else if (curEvent === 'recover') { //恢复
+    } else if (curEvent === 'enable') { //启用
       if (data.id == 1) {
-        layer.alert('超级管理员为系统默认账号，不可进行此操作！', {icon:0,anim:5,offset:'100px'});
+        layer.alert('您选择的是系统默认用户，不可进行此操作！', {icon:0,anim:5,offset:'100px'});
         return false;
       }
-      layer.confirm('确认要恢复用户 ' + data.username + ' 吗？', function (index) {
+      layer.confirm('确认要启用 ' + data.username + ' 吗？', function (index) {
         layer.close(index);
         $.ajax({
           type: 'get',
-          url: '<?php echo $this->baseUrl();?>/adminuser/recover?id=' + data.id,
+          url: '<?php echo $this->baseUrl();?>/adminuser/enable?id=' + data.id,
           dataType: 'json',
           success: function (data) {
             if (data.suc == 1) {
-              layer.alert('恢复成功', {icon:1,anim:5,time:3000,offset:'100px'});
+              layer.alert('启用成功', {icon:1,anim:5,time:3000,offset:'100px'});
               listTable.reload({
                 where: {
                   searchfield: $("select[name='searchfield']").val(),
                   keyword: $("input[name='keyword']").val()
                 }
               });
+            } else {
+              layer.alert(data.info, {icon:2,anim:5,offset:'100px'});
+            }
+          },
+          error: function (data) {
+            layer.alert('网络请求异常',{icon:2,anim:5});
+          }
+        });
+      });
+    } else if (curEvent === 'del') {
+      if (data.id == 1) {
+        layer.alert('您选择的是系统默认用户，不可删除！', {icon:0,anim:5,offset:'100px'});
+        return false;
+      }
+      layer.confirm('确认要删除 ' + data.username + ' 吗？（删除后无法恢复）', function (index) {
+        layer.close(index);
+        $.ajax({
+          type: 'get',
+          url: '<?php echo $this->baseUrl();?>/adminuser/del?id=' + data.id,
+          dataType: 'json',
+          success: function (data) {
+            if (data.suc == 1) {
+              layer.alert('删除成功', {icon:1,anim:5,time:3000,offset:'100px'});
+              obj.del();
             } else {
               layer.alert(data.info, {icon:2,anim:5,offset:'100px'});
             }

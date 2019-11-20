@@ -30,7 +30,7 @@ class ResponseResult
             'data' => $data
         );
 
-        if ($suc == 0) {
+        if ($suc == 0 && $err_code != '') {
             $result['info'] .= '[' . $err_code . ']';
         }
 

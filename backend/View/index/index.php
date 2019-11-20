@@ -1,26 +1,23 @@
 <div class="layui-body">
-    <div style="padding: 15px;">
-      内容主体区域
-
-      <br><br>
-
-      <blockquote class="layui-elem-quote">
-        注意：该页面只是简单的后台布局示例，并不是一整套后台系统方案，您可以关注 layui 官方提供后台模板解决方案：
-        <a href="https://www.layui.com/admin/" target="_blank" class="layui-btn layui-btn-danger">layuiAdmin</a>
-      </blockquote>
-
-      <blockquote class="layui-elem-quote">
-        layui 之所以赢得如此多人的青睐，更多是在于它“前后台系统通吃”的能力。既可编织出绚丽的前台页面，又可满足繁杂的后台功能需求。
-        <br>layui 后台布局， 致力于让每一位开发者都能轻松搭建自己的后台模板。
-      </blockquote>
-
-      <a href="/doc/element/layout.html#admin" target="_blank" class="layui-btn layui-btn-lg">获取该布局代码</a>
-
-      <br><br><br><br>
-
-
-
-
-      下面是充数内容，为的是出现滚动条<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>充数内容<br>
-    </div>
+  <div style="padding: 15px;">
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
+      <legend>MiniAdmin</legend>
+    </fieldset>
+    <blockquote class="layui-elem-quote">
+      MiniAdmin 是基于 MiniFramework 和 Layui 开发的一套后台基础模板。您可以通过下方的码云链接获取本项目源代码。
+    </blockquote>
+    <fieldset class="layui-elem-field layui-field-title" style="margin-top:0px;">
+      <legend>源代码</legend>
+    </fieldset>
+    <script src='https://gitee.com/jasonwei/miniadmin/widget_preview' async defer></script>
+    <div id="osc-gitee-widget-tag"></div>
+    <style>
+    .osc_pro_color {color: #4183c4 !important;}
+    .osc_panel_color {background-color: #ffffff !important;}
+    .osc_background_color {background-color: #ffffff !important;}
+    .osc_border_color {border-color: #e3e9ed !important;}
+    .osc_desc_color {color: #666666 !important;}
+    .osc_link_color * {color: #9b9b9b !important;}
+    </style>
+  </div>
 </div>
