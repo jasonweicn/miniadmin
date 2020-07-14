@@ -1,8 +1,7 @@
 <?php
 namespace backend\Model;
 
-use Mini\Base\Model;
-use Mini\Base\Session;
+use Mini\Base\{Model, Session};
 
 /**
  * 角色模型
@@ -360,5 +359,101 @@ class Role extends Model
         }
         
         return true;
+    }
+    
+    public function updatePurviewData($role_id, $menuIds)
+    {
+        $this->useDb('default');
+        
+        // 提取已有角色权限数据
+        $curPurviewData = $this->table('ma_role_purview')->where('`role_id`=' . $role_id)->select();
+        if ($curPurviewData) {
+            foreach ($curPurviewData as $val) {
+                $k = array_search($val['menu_id'], $menuIds);
+                if ($k === false) {
+                    // 删除（取消）权限
+                    $this->table('ma_role_purview')->where('`id`=' . $val['id'])->delete();
+                } else {
+                    unset($menuIds[$k]);
+                }
+            }
+        }
+        
+        // 写入新的权限
+        if (! empty($menuIds)) {
+            $data = array();
+            foreach ($menuIds as $menu_id) {
+                $data[] = array('menu_id' => $menu_id, 'role_id' => $role_id);
+            }
+            $res = $this->table('ma_role_purview')->data($data)->add();
+            if (! $res) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
+    
+    /**
+     * 获取权限数据
+     * 
+     * @param int $role_id
+     * @return array
+     */
+    public function getPurviewMenuIds($role_id)
+    {
+        $this->useDb('default');
+        $res = $this->table('ma_role_purview')->field('menu_id')->where('role_id=' . $role_id)->select();
+        $data = [];
+        if ($res) {
+            foreach ($res as $val) {
+                $data[] = $val['menu_id'];
+            }
+        }
+        
+        return $data;
+    }
+    
+    /**
+     * 获取树形列表选中状态
+     * 
+     * @param array $menuData
+     * @param array $purviewMenuIds
+     * @return boolean
+     */
+    public function getPurviewStatus($menuData, $purviewMenuIds)
+    {
+        foreach ($menuData as $key => $val) {
+            if (in_array($val['id'], $purviewMenuIds)) {
+                $menuData[$key]['checked'] = true;
+            } else {
+                $menuData[$key]['checked'] = false;
+            }
+            if (isset($val['children']) && count($val['children']) > 0) {
+                unset($menuData[$key]['checked']);
+                $menuData[$key]['spread'] = true;
+                $menuData[$key]['children'] = $this->getPurviewStatus($val['children'], $purviewMenuIds);
+            } else {
+                unset($menuData[$key]['children']);
+            }
+        }
+        
+        return $menuData;
+    }
+    
+    public function parseIds($data)
+    {
+        $idList = [];
+        foreach ($data as $key => $val) {
+            if (! isset($val['id'])) {
+                return false;
+            }
+            $idList[] = $val['id'];
+            if (isset($val['children']) && count($val['children']) > 0) {
+                $idList = array_merge($idList, $this->parseIds($val['children']));
+            }
+        }
+        
+        return $idList;
     }
 }

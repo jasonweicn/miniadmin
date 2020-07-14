@@ -24,29 +24,23 @@
 // +---------------------------------------------------------------------------
 
 // 命名空间
-define('APP_NAMESPACE', 'backend');
-
-// 应用路径
-define('APP_PATH',      dirname(dirname(__FILE__)));
+const APP_NAMESPACE = 'backend';
 
 // 是否显示错误信息
-define('SHOW_ERROR',    true);
+const SHOW_ERROR = true;
 
 // 是否开启日志（生产环境建议关闭）
-define('LOG_ON',        false);
+const LOG_ON = false;
 
 // 是否启用布局功能
-define('LAYOUT_ON',     true);
-
-// 是否开启REST模式的API接口功能（默认值：false）
-define('REST_ON',       false);
+const LAYOUT_ON = true;
 
 // 开启数据库自动连接
-define('DB_AUTO_CONNECT', true);
+const DB_AUTO_CONNECT = true;
 
-define('APP_NAME', 'MiniAdmin');
+const APP_NAME = 'MiniAdmin';
 
-define('PAGE_SIZE', 10);
+const PAGE_SIZE = 10;
 
 // 引入 MiniFramework
 require __DIR__ . '/../../vendor/autoload.php';

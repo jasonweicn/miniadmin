@@ -52,7 +52,7 @@ layui.use(['table'], function () {
   // 渲染表格
   var listTable = table.render({
     elem: "#data-list",
-    url: '<?php echo $this->baseUrl();?>/adminuser/listdata',
+    url: '<?php echo $this->baseUrl();?>/adminuser/list',
     page: true,
     cols: [[
       {field: 'id', title: 'ID', minWidth: 60, sort: true, fixed: 'left'},

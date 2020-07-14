@@ -1,9 +1,33 @@
 <div style="padding: 10px;">
   <form class="layui-form layui-form-pane" method="post" action="">
+    <input type="hidden" name="id" value="<?php echo $this->detail['id'];?>" />
   <div class="layui-form-item">
-    <label class="layui-form-label">角色名称</label>
+    <label class="layui-form-label">菜单名称</label>
     <div class="layui-input-block">
-      <input type="text" name="role_name" lay-verify="required" autocomplete="off" placeholder="请输入角色名称" class="layui-input">
+      <input type="text" name="menu_name" lay-verify="required" autocomplete="off" placeholder="请输入菜单名称" class="layui-input" value="<?php echo $this->detail['menu_name'];?>">
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">父级</label>
+    <div class="layui-input-inline">
+      <select name="pid">
+        <option value="0" selected="selected">无（一级菜单）</option>
+        <?php foreach ($this->topMenuList as $value) {?>
+          <option value="<?php echo $value['id'];?>"<?php if ($value['selected'] == 1) { echo ' selected="selected"';}?>><?php echo $value['menu_name'];?></option>
+        <?php }?>
+      </select>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">路由</label>
+    <div class="layui-input-block">
+      <input type="text" name="route" autocomplete="off" class="layui-input" value="<?php echo $this->detail['route'];?>"<?php if ($this->detail['protected'] == 1) {echo ' disabled="disabled"';}?>>
+    </div>
+  </div>
+  <div class="layui-form-item">
+    <label class="layui-form-label">排序</label>
+    <div class="layui-input-block">
+      <input type="text" name="sort" autocomplete="off" class="layui-input" value="<?php echo $this->detail['sort'];?>">
     </div>
   </div>
   <div class="layui-form-item" style="padding-top:10px;text-align:center">
@@ -22,7 +46,7 @@ layui.use(['form'], function () {
     $('button[name="add_submit"]').addClass('layui-btn-disabled').attr('disabled', 'true');
     $.ajax({
       type: 'post',
-      url: '<?php echo $this->baseUrl();?>/role/save',
+      url: '<?php echo $this->baseUrl();?>/menu/update',
       data: data.field,
       dataType: 'json',
       success: function (data) {
@@ -35,8 +59,8 @@ layui.use(['form'], function () {
         } else {
           layer.alert(data.info, {icon:2,anim:5,closeBtn:0,offset:'100px'}, function (index) {
             layer.close(index);
-            if (data.err_code == 'E03') { // 角色名称重复
-              $('input[name="username"]').addClass('layui-form-danger').focus();
+            if (data.err_code == 'E05') {
+              $('input[name="route"]').addClass('layui-form-danger').focus();
             }
             // 按钮解禁
             $('button[name="add_submit"]').removeClass('layui-btn-disabled').removeAttr('disabled', 'true');

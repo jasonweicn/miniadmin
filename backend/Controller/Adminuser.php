@@ -1,10 +1,8 @@
 <?php
 namespace backend\Controller;
 
-use Mini\Base\Action;
-use Mini\Base\Session;
-use backend\Model\ResponseResult;
-use backend\Model\ResponseListData;
+use Mini\Base\{Action, Session};
+use backend\Model\{ResponseResult, ResponseListData};
 
 /**
  * 用户管理
@@ -16,6 +14,7 @@ class Adminuser extends Action
      */
     function _init()
     {
+        Session::start();
         if (Session::is_set('admin_id') && Session::is_set('admin_nickname') ) {
             $this->view->assign('title', '用户管理 - ' . APP_NAME);
             $this->view->assign('admin_nickname', Session::get('admin_nickname'));
@@ -24,6 +23,14 @@ class Adminuser extends Action
             header('location:login');
             die();
         }
+    }
+    
+    /**
+     * 用户管理（列表）
+     */
+    function indexAction()
+    {
+        $this->view->display();
     }
 
     /**
@@ -58,25 +65,17 @@ class Adminuser extends Action
     }
 
     /**
-     * 用户管理（列表）
-     */
-    function listAction()
-    {
-        $this->view->display();
-    }
-    
-    /**
      * 用户管理列表数据接口
      * 
      * @return \backend\Model\ResponseListData
      */
-    function listdataAction()
+    function listAction()
     {
         $adminuser = new \backend\Model\Adminuser();
         $page = isset($_GET['page']) && preg_match('/^\d+$/', $_GET['page']) ? intval($_GET['page']) : 1;
         $limit = isset($_GET['limit']) && preg_match('/^\d+$/', $_GET['limit']) ? intval($_GET['limit']) : PAGE_SIZE;
         $where = '';
-        if (isset($_GET['searchfield']) && in_array($_GET['searchfield'], array('id', 'username', 'nickname'))) {
+        if (isset($_GET['searchfield']) && in_array($_GET['searchfield'], ['id', 'username', 'nickname'])) {
             if ($_GET['searchfield'] == 'id') {
                 if (isset($_GET['keyword']) && preg_match('/^\d+$/', $_GET['keyword'])) {
                     $where = '`' . $_GET['searchfield'] . '`=' . $_GET['keyword'];
@@ -114,7 +113,7 @@ class Adminuser extends Action
      * 
      * @return \backend\Model\ResponseResult
      */
-    function addsaveAction()
+    function saveAction()
     {
         $post = $this->params->_post;
         //dump($post);die();
@@ -148,11 +147,11 @@ class Adminuser extends Action
             $roleList[] = $key;
         }
         
-        $data = array(
+        $data = [
             'username' => trim($post['username']),
             'nickname' => trim($post['nickname']),
             'password' => trim($post['password1'])
-        );
+        ];
         
         $adminuser = new \backend\Model\Adminuser();
         

@@ -1,20 +1,11 @@
 <?php
 namespace backend\Controller;
 
-use Mini\Base\Action;
-use Mini\Base\Session;
+use Mini\Base\{Action, Session};
 use backend\Model\Adminuser;
 
 class Login extends Action
 {
-    /**
-     * 初始化
-     */
-    function _init()
-    {
-        //...
-    }
-    
     /**
      * 登录页
      */
@@ -57,6 +48,11 @@ class Login extends Action
         $adminuser = new Adminuser();
         $res = $adminuser->login($post['username'], $post['password']);
         //dump($res);die();
+        if ($res === false) {
+            header('location:../login?errcode=1');
+            die();
+        }
+        
         header('location:../');
         die();
     }

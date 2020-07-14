@@ -1,8 +1,7 @@
 <?php
 namespace backend\Model;
 
-use Mini\Base\Model;
-use Mini\Base\Session;
+use Mini\Base\{Model, Session};
 
 /**
  * 后台用户模型
@@ -238,11 +237,16 @@ class Adminuser extends Model
         }
         
         // 写入新的角色
-        $data = array();
+        $data = [];
         foreach ($roleList as $role_id) {
             $data[] = array('adminuser_id' => $adminuser_id, 'role_id' => $role_id);
         }
-        $res = $this->table('ma_adminuser_role')->data($data)->add();
+        if (! empty($data)) {
+            $res = $this->table('ma_adminuser_role')->data($data)->add();
+        } else {
+            $res = true;
+        }
+        
         
         return $res;
     }

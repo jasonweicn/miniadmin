@@ -29,6 +29,7 @@
 <?php $this->beginBlock('jscode');?>
 <script type="text/html" id="listBar">
   <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="relation">关联</a>
+  <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="purview">权限</a>
   <a class="layui-btn layui-btn-normal layui-btn-xs" lay-event="edit">编辑</a>
   <a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="del">删除</a>
 </script>
@@ -39,13 +40,13 @@ layui.use(['table'], function () {
   // 渲染表格
   var listTable = table.render({
     elem: "#data-list",
-    url: '<?php echo $this->baseUrl();?>/role/listdata',
+    url: '<?php echo $this->baseUrl();?>/role/list',
     page: true,
     cols: [[
       {field: 'id', title: 'ID', minWidth: 60, sort: true, fixed: 'left'},
       {field: 'role_name', title: '角色名称', minWidth: 100},
       {field: 'role_user_total', title: '关联用户数', minWidth: 100, sort: true},
-      {title: '操作', toolbar: '#listBar', width: 160},
+      {title: '操作', toolbar: '#listBar', width: 210},
     ]]
   });
 
@@ -92,14 +93,28 @@ layui.use(['table'], function () {
   // 表格事件
   table.on('tool(data-list-event)', function (obj) {
     var data = obj.data;
-    console.log(data);
+    //console.log(data);
     var curEvent = obj.event;
     if (curEvent === 'relation') { //关联
       layer.open({
         type: 2,
-        area: ['420px', '400px'],
+        area: ['420px', '480px'],
         title: '角色管理 - 设定关联 ' + data.role_name + ' 的用户',
         content: '<?php echo $this->baseUrl();?>/role/relation?id=' + data.id,
+        success : function (layero, index) {
+          setTimeout(function () {
+            layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {
+              tips: 3
+            });
+          }, 300);
+        }
+      });
+    } else if (curEvent === 'purview') {
+      layer.open({
+        type: 2,
+        area: ['400px', '480px'],
+        title: '角色管理 - 设定角色 ' + data.role_name + ' 的权限',
+        content: '<?php echo $this->baseUrl();?>/role/purview?id=' + data.id,
         success : function (layero, index) {
           setTimeout(function () {
             layui.layer.tips('点击此处返回', '.layui-layer-setwin .layui-layer-close', {

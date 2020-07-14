@@ -1,33 +1,33 @@
-<div style="padding:10px;text-align:center;">
-  <div id="relationData" class="demo-transfer"></div>
-  <button type="button" id="saveBtn" class="layui-btn" style="margin-top:30px;">保存</button>
+<div style="padding:10px;">
+  <div id="purviewData" class="demo-tree demo-tree-box"></div>
+  <div style="text-align:center;"><button type="button" id="saveBtn" class="layui-btn" style="margin-top:30px;">保存</button></div>
 </div>
 <?php $this->beginBlock('jscode');?>
 <script>
-layui.use(['transfer'], function () {
-  var transfer = layui.transfer;
+layui.use(['tree'], function () {
+  var tree = layui.tree;
 
-  var relation_data;
-  relation_data = JSON.parse('<?php echo $this->relation_data;?>');
-  console.log(relation_data);
-  transfer.render({
-    elem: '#relationData',
-    id: 'defaultTransfer',
-    width: 150,
-    height: 340,
-    title: ['未关联', '已关联'],
-    data: relation_data['l'],
-    value: relation_data['r']
+  var purview_data;
+  purview_data = JSON.parse('<?php echo $this->purview_data;?>');
+  console.log(purview_data);
+  tree.render({
+    elem: '#purviewData',
+    data: purview_data,
+    showCheckbox: true,
+    id: 'purviewTree'
   });
+
 
   $('#saveBtn').click(function () {
     // 按钮禁用
     $(this).addClass('layui-btn-disabled').attr('disabled', 'true');
-    var relationData = transfer.getData('defaultTransfer');
+    var purviewData = tree.getChecked('purviewTree');
+    //console.log(purviewData);
+
     $.ajax({
       type: 'post',
-      url: '<?php echo $this->baseUrl();?>/role/relationsave',
-      data: {role_id:<?php echo $this->role_id;?>,relation_data:relationData},
+      url: '<?php echo $this->baseUrl();?>/role/purviewsave',
+      data: {role_id:<?php echo $this->role_id;?>,purview_data:purviewData},
       dataType: 'json',
       success: function (data) {
         if (data.suc == 1) {

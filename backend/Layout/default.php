@@ -13,7 +13,7 @@
 <!-- footer end -->
 
 </div>
-<script src="<?php echo $this->baseUrl();?>/assets/jquery.js"></script>
+<script src="<?php echo $this->baseUrl();?>/assets/jquery-3.4.1.min.js"></script>
 <script src="<?php echo $this->baseUrl();?>/assets/layui/layui.js"></script>
 <script src="<?php echo $this->baseUrl();?>/js/backend.js"></script>
 <script>
@@ -39,5 +39,6 @@ $('#logout').click(function () {
 });
 </script>
 <?php $this->insertBlock('jscode');?>
+<?php $this->insertBlock('side_jscode');?>
 </body>
 </html>

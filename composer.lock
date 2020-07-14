@@ -4,24 +4,24 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98df75724c662f40fb3cb7bc86d80831",
+    "content-hash": "453dadcc501b8fd8350f33e209a0a215",
     "packages": [
         {
             "name": "jasonweicn/miniframework",
-            "version": "2.2.0",
+            "version": "2.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonweicn/miniframework-core.git",
-                "reference": "471d3bffd2898f0a1cc593d515de629dd141dea5"
+                "reference": "5ba2fad6b6be84aa5b2bb8aa2548af63d6465be0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonweicn/miniframework-core/zipball/471d3bffd2898f0a1cc593d515de629dd141dea5",
-                "reference": "471d3bffd2898f0a1cc593d515de629dd141dea5",
+                "url": "https://api.github.com/repos/jasonweicn/miniframework-core/zipball/5ba2fad6b6be84aa5b2bb8aa2548af63d6465be0",
+                "reference": "5ba2fad6b6be84aa5b2bb8aa2548af63d6465be0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=7.2.0"
             },
             "type": "library",
             "autoload": {
@@ -40,7 +40,7 @@
                 }
             ],
             "description": "Mini PHP Framework",
-            "time": "2019-10-30T03:34:38+00:00"
+            "time": "2020-07-11T03:51:23+00:00"
         }
     ],
     "packages-dev": [],
@@ -50,7 +50,7 @@
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
-        "php": ">=5.4.0"
+        "php": ">=7.2.0"
     },
     "platform-dev": []
 }

@@ -5,9 +5,9 @@ use Mini\Base\{Action, Session};
 use backend\Model\{ResponseResult, ResponseListData};
 
 /**
- * 角色管理
+ * 权限管理
  */
-class Role extends Action
+class Purview extends Action
 {
     /**
      * 初始化
@@ -16,7 +16,7 @@ class Role extends Action
     {
         Session::start();
         if (Session::is_set('admin_id') && Session::is_set('admin_nickname') ) {
-            $this->view->assign('title', '角色管理 - ' . APP_NAME);
+            $this->view->assign('title', '权限管理 - ' . APP_NAME);
             $this->view->assign('admin_nickname', Session::get('admin_nickname'));
             $this->view->_layout->setLayout('default');
         } else {
@@ -24,11 +24,11 @@ class Role extends Action
             die();
         }
     }
-    
+
     /**
-     * 角色管理
+     * 角色管理（列表）
      */
-    function indexAction()
+    function listAction()
     {
         $this->view->display();
     }
@@ -63,9 +63,6 @@ class Role extends Action
         return new ResponseListData(0, '', $count, $data);
     }
     
-    /**
-     * 新增角色
-     */
     function addAction()
     {
         $this->view->_layout->setLayout('iframe');
@@ -223,87 +220,21 @@ class Role extends Action
         die();
     }
     
-    /**
-     * 关联
-     * 
-     * @return \backend\Model\ResponseResult
-     */
     function relationAction()
     {
-        if (! isset($_GET['id']) || ! preg_match('/^\d+$/', $_GET['id'])) {
-            return new ResponseResult(0, '缺少必要的参数');
+        if (isset($_GET['id']) && preg_match('/^\d+$/', $_GET['id'])) {
+            
+            $role = new \backend\Model\Role();
+            $res = $role->getRelationData($_GET['id']);
+            //dump($res);die();
+            $this->assign('relation_data', json_encode($res));
+            $this->assign('role_id', $_GET['id']);
+            $this->view->_layout->setLayout('iframe');
+            $this->view->display();
+            
         }
         
-        $role = new \backend\Model\Role();
-        $res = $role->getRelationData($_GET['id']);
-        //dump($res);die();
-        $this->assign('relation_data', json_encode($res));
-        $this->assign('role_id', $_GET['id']);
-        $this->view->_layout->setLayout('iframe');
-        $this->view->display();
-    }
-    
-    /**
-     * 权限
-     * 
-     * @return \backend\Model\ResponseResult
-     */
-    function purviewAction()
-    {
-        if (! isset($_GET['id']) || ! preg_match('/^\d+$/', $_GET['id'])) {
-            return new ResponseResult(0, '缺少必要的参数');
-        }
-        $menuObj = new \backend\Model\Menu();
-        $menuData = $menuObj->getTreeList('purview');
-        
-        $roleObj = new \backend\Model\Role();
-        $purviewMenuIds = $roleObj->getPurviewMenuIds($_GET['id']);
-        $data = $roleObj->getPurviewStatus($menuData, $purviewMenuIds);
-        
-        $this->assign('purview_data', pushJson($data, false));
-        $this->assign('role_id', $_GET['id']);
-        $this->view->_layout->setLayout('iframe');
-        $this->view->display();
-    }
-    
-    /**
-     * 权限数据保存
-     * 
-     * @return \backend\Model\ResponseResult
-     */
-    function purviewsaveAction()
-    {
-        $post = $this->params->_post;
-        //dump($post);die();
-        if (! isset($post['role_id']) || empty($post['role_id'])) {
-            return new ResponseResult(0, '缺少必要的参数', 'E01');
-        }
-        if (! preg_match('/^\d+$/', $post['role_id'])) {
-            return new ResponseResult(0, '您提交的数据格式不正确', 'E02');
-        }
-        $purviewData = [];
-        if (isset($post['purview_data']) && !empty($post['purview_data'])) {
-            $purviewData = $post['purview_data'];
-        }
-        
-        $roleObj = new \backend\Model\Role();
-        
-        $menuIds = $roleObj->parseIds($purviewData);
-        
-        if (! empty ($menuIds)) {
-            foreach ($menuIds as $id) {
-                if (! preg_match('/^\d+$/', $id)) {
-                    return new ResponseResult(0, '您提交的数据格式不正确', 'E03');
-                }
-            }
-        }
-        
-        
-        $res = $roleObj->updatePurviewData($post['role_id'], $menuIds);
-        if ($res) {
-            return new ResponseResult(1, '权限设定成功');
-        }
-        return new ResponseResult(0, '请求异常', 'E99');
+        return new ResponseResult(0, '缺少必要的参数');
     }
     
     /**

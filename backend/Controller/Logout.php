@@ -1,8 +1,7 @@
 <?php
 namespace backend\Controller;
 
-use Mini\Base\Action;
-use Mini\Base\Session;
+use Mini\Base\{Action, Session};
 
 class Logout extends Action
 {
@@ -19,6 +18,7 @@ class Logout extends Action
      */
     function indexAction()
     {
+        Session::start();
         Session::set('admin_id', null);
         Session::destroy();
         header('location:/');

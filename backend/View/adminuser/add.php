@@ -74,7 +74,7 @@ layui.use(['form'], function () {
     $('button[name="add_submit"]').addClass('layui-btn-disabled').attr('disabled', 'true');
     $.ajax({
       type: 'post',
-      url: '<?php echo $this->baseUrl();?>/adminuser/addsave',
+      url: '<?php echo $this->baseUrl();?>/adminuser/save',
       data: data.field,
       dataType: 'json',
       success: function (data) {
