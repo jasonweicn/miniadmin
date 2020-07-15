@@ -21,7 +21,7 @@ class ResponseResult
      * @param string $err_code 错误代码
      * @param array  $data     数据
      */
-    public function __construct($suc, $info, $err_code = '', $data = array(), $ext_info = null, $push = true)
+    public function __construct($suc, $info, $err_code = '', $data = [], $ext_info = null, $push = true)
     {
         $result = array(
             'suc' => $suc,

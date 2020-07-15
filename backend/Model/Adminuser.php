@@ -24,10 +24,10 @@ class Adminuser extends Model
             return false;
         }
         
-        $userData = array();
+        $userData = [];
         $encrypt_password = md5($password . $res['encrypt']);
         if ($encrypt_password == $res['password']) {
-            $data = array('login_time' => date('Y-m-d H:i:s'));
+            $data = ['login_time' => date('Y-m-d H:i:s')];
             if (! $this->table('ma_adminuser')->data($data)->where('id=' . $res['id'])->save()) {
                 return false;
             }
@@ -36,11 +36,11 @@ class Adminuser extends Model
             Session::set('admin_username', $res['username']);
             Session::set('admin_nickname', $res['nickname']);
             Session::set('admin_login_time', $res['login_time']);
-            $userData = array(
+            $userData = [
                 'admin_id' => $res['id'],
                 'admin_username' => $res['username'],
                 'admin_login_time' => $res['login_time']
-            );
+            ];
         } else {
             return false;
         }
@@ -85,7 +85,7 @@ class Adminuser extends Model
         if (! $res) {
             return false;
         }
-        $data = array();
+        $data = [];
         $data['encrypt'] = getRandomString(8);
         $data['password'] = md5($profile['newpassword1'] . $data['encrypt']);
         $data['update_time'] = date('Y-m-d H:i:s');
@@ -145,9 +145,9 @@ class Adminuser extends Model
         $offset = $page == 1 ? 0 : ($page - 1) * $limit;
         $this->useDb('default');
         if (isset($where) && ! empty($where)) {
-            $res = $this->table('ma_adminuser')->where($where)->order(array('id' => 'ASC'))->limit($offset, $limit)->select();
+            $res = $this->table('ma_adminuser')->where($where)->order(['id' => 'ASC'])->limit($offset, $limit)->select();
         } else {
-            $res = $this->table('ma_adminuser')->order(array('id' => 'ASC'))->limit($offset, $limit)->select();
+            $res = $this->table('ma_adminuser')->order(['id' => 'ASC'])->limit($offset, $limit)->select();
         }
         
         if ($res) {
@@ -158,6 +158,14 @@ class Adminuser extends Model
         return $res;
     }
     
+    /**
+     * 获取用户资料
+     * 
+     * @param string $search_field
+     * @param string $search_value
+     * @param string $field
+     * @return boolean|array
+     */
     public function getProfile($search_field, $search_value, $field = '*')
     {
         if (empty($search_field) || empty($search_value)) {
@@ -208,9 +216,9 @@ class Adminuser extends Model
      */
     public function addRoleData($adminuser_id, $roleList)
     {
-        $data = array();
+        $data = [];
         foreach ($roleList as $role_id) {
-            $data[] = array('adminuser_id' => $adminuser_id, 'role_id' => $role_id);
+            $data[] = ['adminuser_id' => $adminuser_id, 'role_id' => $role_id];
         }
         $this->useDb('default');
         $res = $this->table('ma_adminuser_role')->data($data)->add();
@@ -218,6 +226,13 @@ class Adminuser extends Model
         return $res;
     }
     
+    /**
+     * 更新用户关联的角色
+     * 
+     * @param int $adminuser_id
+     * @param array $roleList
+     * @return boolean
+     */
     public function updateRoleData($adminuser_id, $roleList)
     {
         $this->useDb('default');
@@ -239,7 +254,7 @@ class Adminuser extends Model
         // 写入新的角色
         $data = [];
         foreach ($roleList as $role_id) {
-            $data[] = array('adminuser_id' => $adminuser_id, 'role_id' => $role_id);
+            $data[] = ['adminuser_id' => $adminuser_id, 'role_id' => $role_id];
         }
         if (! empty($data)) {
             $res = $this->table('ma_adminuser_role')->data($data)->add();
@@ -260,9 +275,9 @@ class Adminuser extends Model
     public function disable($id)
     {
         $this->useDb('default');
-        $data = array(
+        $data = [
             'disable' => 1
-        );
+        ];
         $res = $this->table('ma_adminuser')->data($data)->where('id='.$id)->save();
         
         return $res;
@@ -277,9 +292,9 @@ class Adminuser extends Model
     public function enable($id)
     {
         $this->useDb('default');
-        $data = array(
+        $data = [
             'disable' => 0
-        );
+        ];
         $res = $this->table('ma_adminuser')->data($data)->where('id='.$id)->save();
         
         return $res;
@@ -314,7 +329,7 @@ class Adminuser extends Model
         if (! $res) {
             return false;
         }
-        $data = array();
+        $data = [];
         $data['nickname'] = $profile['nickname'];
         if (isset($profile['password']) && ! empty($profile['password'])) {
             $data['encrypt'] = getRandomString(8);
@@ -327,6 +342,12 @@ class Adminuser extends Model
         return $res;
     }
     
+    /**
+     * 获取角色数据
+     * 
+     * @param int $id
+     * @return array
+     */
     public function getRole($id)
     {
         $this->useDb('default');

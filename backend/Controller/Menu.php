@@ -111,6 +111,11 @@ class Menu extends Action
         return new ResponseResult(0, '请求异常', 'E99');
     }
     
+    /**
+     * 更新
+     * 
+     * @return \backend\Model\ResponseResult
+     */
     function updateAction()
     {
         $post = $this->params->_post;

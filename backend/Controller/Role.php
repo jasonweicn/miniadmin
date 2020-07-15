@@ -44,7 +44,7 @@ class Role extends Action
         $page = isset($_GET['page']) && preg_match('/^\d+$/', $_GET['page']) ? intval($_GET['page']) : 1;
         $limit = isset($_GET['limit']) && preg_match('/^\d+$/', $_GET['limit']) ? intval($_GET['limit']) : PAGE_SIZE;
         $where = '';
-        if (isset($_GET['searchfield']) && in_array($_GET['searchfield'], array('id', 'role_name'))) {
+        if (isset($_GET['searchfield']) && in_array($_GET['searchfield'], ['id', 'role_name'])) {
             if ($_GET['searchfield'] == 'id') {
                 if (isset($_GET['keyword']) && preg_match('/^\d+$/', $_GET['keyword'])) {
                     $where = '`' . $_GET['searchfield'] . '`=' . $_GET['keyword'];
@@ -88,9 +88,9 @@ class Role extends Action
             return new ResponseResult(0, '角色名称包含有不被允许的字符', 'E02');
         }
         
-        $data = array(
+        $data = [
             'role_name' => trim($post['role_name'])
-        );
+        ];
         
         $role = new \backend\Model\Role();
         
@@ -322,7 +322,7 @@ class Role extends Action
             return new ResponseResult(0, '您提交的数据格式不正确', 'E02');
         }
         
-        $adminuserIds = array();
+        $adminuserIds = [];
         if (isset($post['relation_data']) && ! empty ($post['relation_data'])) {
             foreach ($post['relation_data'] as $val) {
                 if (! preg_match('/^\d+$/', $val['value'])) {

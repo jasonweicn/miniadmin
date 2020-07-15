@@ -24,7 +24,7 @@ class ResponseListData
      * @param boolean   $push
      * @return string
      */
-    public function __construct($code, $msg, $count, $data = array(), $push = true)
+    public function __construct($code, $msg, $count, $data = [], $push = true)
     {
         $result = array(
             'code' => $code,

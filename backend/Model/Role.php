@@ -24,10 +24,10 @@ class Role extends Model
             return false;
         }
         
-        $userData = array();
+        $userData = [];
         $encrypt_password = md5($password . $res['encrypt']);
         if ($encrypt_password == $res['password']) {
-            $data = array('login_time' => date('Y-m-d H:i:s'));
+            $data = ['login_time' => date('Y-m-d H:i:s')];
             if (! $this->table('ma_adminuser')->data($data)->where('id=' . $res['id'])->save()) {
                 return false;
             }
@@ -36,11 +36,11 @@ class Role extends Model
             Session::set('admin_username', $res['username']);
             Session::set('admin_nickname', $res['nickname']);
             Session::set('admin_login_time', $res['login_time']);
-            $userData = array(
+            $userData = [
                 'admin_id' => $res['id'],
                 'admin_username' => $res['username'],
                 'admin_login_time' => $res['login_time']
-            );
+            ];
         } else {
             return false;
         }
@@ -85,7 +85,7 @@ class Role extends Model
         if (! $res) {
             return false;
         }
-        $data = array();
+        $data = [];
         $data['encrypt'] = getRandomString(8);
         $data['password'] = md5($profile['newpassword1'] . $data['encrypt']);
         $data['update_time'] = date('Y-m-d H:i:s');
@@ -145,9 +145,9 @@ class Role extends Model
         $offset = $page == 1 ? 0 : ($page - 1) * $limit;
         $this->useDb('default');
         if (isset($where) && ! empty($where)) {
-            $res = $this->table('ma_role')->where($where)->order(array('id' => 'ASC'))->limit($offset, $limit)->select();
+            $res = $this->table('ma_role')->where($where)->order(['id' => 'ASC'])->limit($offset, $limit)->select();
         } else {
-            $res = $this->table('ma_role')->order(array('id' => 'ASC'))->limit($offset, $limit)->select();
+            $res = $this->table('ma_role')->order(['id' => 'ASC'])->limit($offset, $limit)->select();
         }
         
         if ($res) {
@@ -284,7 +284,7 @@ class Role extends Model
         if (! $res) {
             return false;
         }
-        $data = array();
+        $data = [];
         $data['role_name'] = $roleInfo['role_name'];
         $data['update_time'] = date('Y-m-d H:i:s');
         
@@ -293,6 +293,11 @@ class Role extends Model
         return $res;
     }
     
+    /**
+     * 获取全部角色数据
+     * 
+     * @return array
+     */
     public function getAllRole()
     {
         $this->useDb('default');
@@ -301,19 +306,25 @@ class Role extends Model
         return $res;
     }
     
+    /**
+     * 通过角色ID获取关联用户数据
+     * 
+     * @param int $role_id
+     * @return array
+     */
     public function getRelationData($role_id)
     {
         $this->useDb('default');
         $adminuserData = $this->table('ma_adminuser')->select();
         $relData = $this->table('ma_adminuser_role')->field('adminuser_id')->where('role_id=' . $role_id)->select();
-        $data = array();
+        $data = [];
         if ($adminuserData) {
             foreach ($adminuserData as $val) {
-                $data['l'][] = array(
+                $data['l'][] = [
                     'value' => $val['id'],
                     'title' => $val['username'],
                     'disabled' => ($val['id'] == 1 && $role_id == 1) ? true : false,
-                );
+                ];
             }
             if ($relData) {
                 $relData = chgArrayKey($relData, 'adminuser_id');
@@ -328,6 +339,13 @@ class Role extends Model
         return $data;
     }
     
+    /**
+     * 更新角色关联用户的数据
+     * 
+     * @param int $role_id
+     * @param array $adminuserIds
+     * @return boolean
+     */
     public function updateRoleData($role_id, $adminuserIds)
     {
         $this->useDb('default');
@@ -348,9 +366,9 @@ class Role extends Model
         
         // 写入新的角色关联数据
         if (! empty($adminuserIds)) {
-            $data = array();
+            $data = [];
             foreach ($adminuserIds as $adminuser_id) {
-                $data[] = array('adminuser_id' => $adminuser_id, 'role_id' => $role_id);
+                $data[] = ['adminuser_id' => $adminuser_id, 'role_id' => $role_id];
             }
             $res = $this->table('ma_adminuser_role')->data($data)->add();
             if (! $res) {
@@ -361,6 +379,13 @@ class Role extends Model
         return true;
     }
     
+    /**
+     * 更新权限数据
+     * 
+     * @param int $role_id
+     * @param array $menuIds
+     * @return boolean
+     */
     public function updatePurviewData($role_id, $menuIds)
     {
         $this->useDb('default');
@@ -381,9 +406,9 @@ class Role extends Model
         
         // 写入新的权限
         if (! empty($menuIds)) {
-            $data = array();
+            $data = [];
             foreach ($menuIds as $menu_id) {
-                $data[] = array('menu_id' => $menu_id, 'role_id' => $role_id);
+                $data[] = ['menu_id' => $menu_id, 'role_id' => $role_id];
             }
             $res = $this->table('ma_role_purview')->data($data)->add();
             if (! $res) {
@@ -441,6 +466,12 @@ class Role extends Model
         return $menuData;
     }
     
+    /**
+     * 从树形数组中解析提取所有主键ID
+     * 
+     * @param array $data
+     * @return boolean|array
+     */
     public function parseIds($data)
     {
         $idList = [];

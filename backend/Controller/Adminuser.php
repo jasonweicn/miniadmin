@@ -306,7 +306,7 @@ class Adminuser extends Action
         if (! isset($post['role']) || empty($post['role'])) {
             return new ResponseResult(0, '至少选择一个角色', 'E06');
         }
-        $roleList = array();
+        $roleList = [];
         foreach ($post['role'] as $key => $val) {
             if (! preg_match('/^\d+$/', $key) || $val != 'on') {
                 return new ResponseResult(0, '角色数据格式不正确', 'E07');
