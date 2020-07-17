@@ -29,7 +29,7 @@
       <div class="layui-field-box">
         <div class="layui-form-item">
           <?php foreach ($this->roleList as $val) {?>
-            <input type="checkbox" name="role[<?php echo $val['id'];?>]" title="<?php echo $val['role_name'];?>" lay-verify="required|choiceOne" <?php if ($val['checked'] === true) {echo 'checked="checked"';}?>>
+            <input type="checkbox" name="role[<?php echo $val['id'];?>]" title="<?php echo $val['role_name'];?>" lay-verify="required|choiceOne" <?php if ($val['on'] === true) {echo 'checked="checked"';}?>>
           <?php }?>
         </div>
       </div>

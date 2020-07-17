@@ -124,8 +124,14 @@ class Role extends Action
             if ($adminuserCount > 0) {
                 return new ResponseResult(0, '有 ' . $adminuserCount . ' 个关联此角色的用户，暂时无法删除！');
             }
+            
             $res = $role->del($_GET['id']);
             if ($res) {
+                
+                // 删除角色关联的权限数据
+                $purviewObj = new \backend\Model\Purview();
+                $purviewObj->delPurviewByRoleId($_GET['id']);
+                
                 return new ResponseResult(1, '删除成功');
             }
         }

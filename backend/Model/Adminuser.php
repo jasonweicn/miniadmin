@@ -36,6 +36,18 @@ class Adminuser extends Model
             Session::set('admin_username', $res['username']);
             Session::set('admin_nickname', $res['nickname']);
             Session::set('admin_login_time', $res['login_time']);
+            
+            // 根据角色权限确定当前用户可显示和访问的菜单
+            $purviewObj = new \backend\Model\Purview();
+            $purviewData = $purviewObj->getPurviewByAdminUserId($res['id']);
+            $menuIds = [];
+            if ($purviewData) {
+                foreach ($purviewData as $val) {
+                    $menuIds[] = $val['menu_id'];
+                }
+            }
+            Session::set('admin_purview', $menuIds);
+            
             $userData = [
                 'admin_id' => $res['id'],
                 'admin_username' => $res['username'],
@@ -311,6 +323,11 @@ class Adminuser extends Model
         $this->useDb('default');
         $res = $this->table('ma_adminuser')->where('id='.$id)->delete();
         
+        // 删除用户账号的角色关联数据
+        if ($res) {
+            $this->table('ma_adminuser_role')->where('adminuser_id='.$id)->delete();
+        }
+        
         return $res;
     }
     
@@ -348,7 +365,7 @@ class Adminuser extends Model
      * @param int $id
      * @return array
      */
-    public function getRole($id)
+    public function getRoleByAdminUserId($id)
     {
         $this->useDb('default');
         $res = $this->table('ma_adminuser_role')->where('`adminuser_id`=' . $id)->select();

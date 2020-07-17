@@ -1,7 +1,7 @@
 <?php
 namespace backend\Controller;
 
-use Mini\Base\Action;
+use Mini\Base\{Action, Session};
 use backend\Model\{ResponseResult, ResponseListData};
 
 /**
@@ -18,7 +18,9 @@ class Common extends Action
     function loadmenuAction()
     {
         $menu = new \backend\Model\Menu();
-        $menuList = $menu->getTreeList();
+        Session::start();
+        $menuIds = Session::get('admin_purview');
+        $menuList = $menu->getTreeList('default', $menuIds);
         
         return new ResponseResult(1, '', '', $menuList);
     }

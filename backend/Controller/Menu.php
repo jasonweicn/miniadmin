@@ -159,6 +159,11 @@ class Menu extends Action
             if (! $parentMenuData) {
                 return new ResponseResult(0, '父级菜单不存在', 'E10');
             }
+            
+            $childrenMenuCount = $menu->getCount('pid='.$post['id']);
+            if ($childrenMenuCount) {
+                return new ResponseResult(0, '当前菜单下存在子菜单，只能作为一级菜单使用', 'E11');
+            }
         }
         
         $data = [
@@ -238,12 +243,20 @@ class Menu extends Action
             if ($menuDetail['protected'] == 1) {
                 return new ResponseResult(0, '这是受保护的系统默认菜单，不可删除！');
             }
-            if ($menuDetail['pid'] == 0) {
-                $subMenuNums = $menu->getCount('pid=' . $menuDetail['id']);
-                if ($subMenuNums > 0) {
-                    return new ResponseResult(0, '此菜单下存在子菜单项，暂时无法删除！');
-                }
+            
+            // 校验子菜单
+            $subMenuNums = $menu->getCount('pid=' . $menuDetail['id']);
+            if ($subMenuNums > 0) {
+                return new ResponseResult(0, '此菜单下存在子菜单项，暂时无法删除！');
             }
+            
+            // 校验关联角色
+            $purviewObj = new \backend\Model\Purview();
+            $purviewData = $purviewObj->getPurviewByMenuId($menuDetail['id']);
+            if (! empty($purviewData)) {
+                return new ResponseResult(0, '此菜单存在关联的角色，暂时无法删除！');
+            }
+            
             $res = $menu->del($_GET['id']);
             if ($res) {
                 return new ResponseResult(1, '删除成功');

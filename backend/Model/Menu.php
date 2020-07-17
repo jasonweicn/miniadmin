@@ -48,15 +48,23 @@ class Menu extends Model
         return false;
     }
     
-    public function getTreeList($type = 'default')
+    public function getTreeList($type = 'default', $allowMenuIds = [])
     {
         $this->useDb('default');
+        
+        $where = '';        
         if ($type == 'default') {
+            if (empty($allowMenuIds)) {
+                return false;
+            } else {
+                $where = 'disable=0 AND id IN (' . implode(', ', $allowMenuIds). ')';
+            }
             $childKeyName = 'child';
-            $listData = $this->table('ma_menu')->where('disable=0')->order(['sort' => 'ASC', 'id' => 'ASC'])->select();
+            $listData = $this->table('ma_menu')->where($where)->order(['sort' => 'ASC', 'id' => 'ASC'])->select();
         } else if ($type == 'purview') {
+            $where = 'disable=0';
             $childKeyName = 'children';
-            $listData = $this->table('ma_menu')->field('id,pid,menu_name AS title')->where('disable=0')->order(['sort' => 'ASC', 'id' => 'ASC'])->select();
+            $listData = $this->table('ma_menu')->field('id,pid,menu_name AS title')->where($where)->order(['sort' => 'ASC', 'id' => 'ASC'])->select();
         }
         
         if (! $listData) {
@@ -103,10 +111,12 @@ class Menu extends Model
             $res = $this->table('ma_menu')->order(['id' => 'ASC'])->limit($offset, $limit)->select();
         }
         
+        $allMenu = $this->table('ma_menu')->field('id,menu_name')->select();
+        $allMenu = chgArrayKey($allMenu, 'id');
+        
         if ($res) {
-            $res2 = chgArrayKey($res, 'id');
             foreach ($res as $key => $val) {
-                $res[$key]['pname'] = $val['pid'] == 0 ? '(未设置)' : $res2[$val['pid']]['menu_name'];
+                $res[$key]['pname'] = $val['pid'] == 0 ? '(未设置)' : $allMenu[$val['pid']]['menu_name'];
                 $res[$key]['status'] = $val['disable'] == 1 ? '禁用' : '启用';
             }
         }

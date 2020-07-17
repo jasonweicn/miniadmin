@@ -487,4 +487,9 @@ class Role extends Model
         
         return $idList;
     }
+    
+    public function getMenuIdsByRoleId($roid_id)
+    {
+        
+    }
 }

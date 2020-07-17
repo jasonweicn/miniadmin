@@ -266,7 +266,7 @@ class Adminuser extends Action
             $this->assign('detail', $res);
             
             // 提取关联角色
-            $relRoleList = $adminuser->getRole($_GET['id']);
+            $relRoleList = $adminuser->getRoleByAdminUserId($_GET['id']);
             $relRoleList = chgArrayKey($relRoleList, 'role_id');
             //$this->assign('relRoleList', $relRoleList);
             
@@ -275,7 +275,7 @@ class Adminuser extends Action
             $roleList = $role->getAllRole();
             if ($roleList) {
                 foreach ($roleList as $key => $val) {
-                    $roleList[$key]['checked'] = isset($relRoleList[$val['id']]) ? true : false;
+                    $roleList[$key]['on'] = isset($relRoleList[$val['id']]) ? true : false;
                 }
             }
             

@@ -111,7 +111,7 @@ layui.use(['table'], function () {
     if (curEvent === 'detail') {
       layer.open({
         type: 2,
-        area: ['350px', '400px'],
+        area: ['400px', '480px'],
         title: '用户管理 - 详情',
         content: '<?php echo $this->baseUrl();?>/adminuser/detail?id=' + data.id,
         success : function (layero, index) {
@@ -125,7 +125,7 @@ layui.use(['table'], function () {
     } else if (curEvent === 'edit') { //编辑
       layer.open({
         type: 2,
-        area: ['350px', '400px'],
+        area: ['400px', '480px'],
         title: '用户管理 - 编辑',
         content: '<?php echo $this->baseUrl();?>/adminuser/edit?id=' + data.id,
         success : function (layero, index) {
