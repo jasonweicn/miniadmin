@@ -135,7 +135,7 @@ http://你的域名/index.php
 开源协议
 --------------------
 
-MiniAdmin 遵循 `Apache License Version 2.0` 开源协议发布。
+MiniAdmin 遵循 Apache License Version 2.0 开源协议发布。
 
 协议详细内容请浏览项目目录中的 LICENSE 文件。
 
