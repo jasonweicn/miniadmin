@@ -23,7 +23,7 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 ```
 
-> Windows 和 MacOS 系统的开发者可前往 Composer 的官网 [https://getcomposer.org/](https://getcomposer.org/) 下载对应的安装包进行安装。
+> Windows 和 MacOS 系统的开发者可前往 Composer 的官网 [https://getcomposer.org/](https://getcomposer.org/) 参考官方文档进行安装。
 
 ### 2.通过 Composer 安装 MiniAdmin
 
