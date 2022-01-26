@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "jasonweicn/miniframework",
-            "version": "2.6.0",
+            "version": "2.8.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jasonweicn/miniframework-core.git",
-                "reference": "73622dcc7e791310cddf1c0028a16202eb15a452"
+                "reference": "2b8c2b6cc4a41bf181fc6a4103edb1dbf33a53f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jasonweicn/miniframework-core/zipball/73622dcc7e791310cddf1c0028a16202eb15a452",
-                "reference": "73622dcc7e791310cddf1c0028a16202eb15a452",
+                "url": "https://api.github.com/repos/jasonweicn/miniframework-core/zipball/2b8c2b6cc4a41bf181fc6a4103edb1dbf33a53f6",
+                "reference": "2b8c2b6cc4a41bf181fc6a4103edb1dbf33a53f6",
                 "shasum": "",
                 "mirrors": [
                     {
@@ -48,9 +48,9 @@
             "description": "Mini PHP Framework",
             "support": {
                 "issues": "https://github.com/jasonweicn/miniframework-core/issues",
-                "source": "https://github.com/jasonweicn/miniframework-core/tree/2.6.0"
+                "source": "https://github.com/jasonweicn/miniframework-core/tree/2.8.1"
             },
-            "time": "2021-01-10T00:57:35+00:00"
+            "time": "2022-01-26T03:42:27+00:00"
         }
     ],
     "packages-dev": [],
@@ -63,5 +63,5 @@
         "php": ">=7.2.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
