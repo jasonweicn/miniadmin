@@ -9,9 +9,9 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="format-detection" content="telephone=no">
-<title>登录 - <?php echo APP_NAME;?></title>
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/assets/layui/css/layui.css" media="all">
-<link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/css/login.css">
+<title>登录 - {const:APP_NAME}</title>
+<link rel="stylesheet" type="text/css" href="{$baseUrl}/assets/layui/css/layui.css" media="all">
+<link rel="stylesheet" type="text/css" href="{$baseUrl}/css/login.css">
 <style type="text/css">
 .mini-icon-username,.mini-icon-password,.mini-icon-vercode{position:absolute; width:38px; line-height:36px; text-align:center; color:#d2d2d2}
 </style>
@@ -19,7 +19,7 @@
 
 <body>
   <div class="layui-container" style="width:320px;padding-top:10%">
-    <div class="layui-elip" style="text-align: center;padding:5px;color:#666"><h1><?php echo APP_NAME;?></h1></div>
+    <div class="layui-elip" style="text-align: center;padding:5px;color:#666"><h1>{const:APP_NAME}</h1></div>
     <form id="login_form" class="layui-form" action="login/check" method="post">
       <div class="layui-form-item">
         <label class="layui-icon layui-icon-username mini-icon-username" for="login_username"></label>
@@ -40,8 +40,8 @@
       </div>
     </form>
   </div>
-<script src="<?php echo $this->baseUrl();?>/assets/jquery.js"></script>
-<script src="<?php echo $this->baseUrl();?>/assets/layui/layui.js"></script>
+<script src="{$baseUrl}/assets/jquery.js"></script>
+<script src="{$baseUrl}/assets/layui/layui.js"></script>
 <script>
 layui.use('form', function() {
     var form = layui.form;
@@ -51,7 +51,7 @@ layui.use('form', function() {
         layer.alert(msg,{icon:0,anim:1,offset:"50px"});
     }
     
-    var errcode = <?php echo $this->errcode;?>;
+    var errcode = {$errcode};
     if (errcode == 1) {
         openAlert("用户名或密码错误");
     } else if (errcode == 2) {

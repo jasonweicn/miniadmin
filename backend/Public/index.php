@@ -35,6 +35,9 @@ const LOG_ON = false;
 // 是否启用布局功能
 const LAYOUT_ON = true;
 
+// 开启模板引擎
+const TPL_ON = true;
+
 // 开启数据库自动连接
 const DB_AUTO_CONNECT = true;
 

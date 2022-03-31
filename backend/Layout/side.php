@@ -4,14 +4,14 @@
       </dl>
     </div>
   </div>
-  <?php $this->beginBlock('side_jscode');?>
+  {beginBlock:side_jscode}
   <script>
   layui.use('element', function(){
     var element = layui.element;
 
     $.ajax({
       type: 'get',
-      url: '<?php echo $this->baseUrl();?>/common/loadmenu',
+      url: '{$baseUrl}/common/loadmenu',
       dataType: 'json',
       success: function (data) {
         if (data.suc == 1) {
@@ -31,12 +31,6 @@
         layer.alert('网络请求异常',{icon:2,anim:5});
       }
     });
-
-    //var menu_tree_data = JSON.parse('<?php \Mini\Base\Session::start();echo \Mini\Base\Session::get('admin_menu');?>');
-    //menu_tree_data = setTreeStatus(menu_tree_data);
-    //console.log(menu_tree_data);
-    //var menu_tree = createTree(menu_tree_data);
-    //$('#side_menu').html(menu_tree);
 
     //元素初始化，以便让异步追加的代码重新渲染
     element.init();
@@ -89,7 +83,7 @@
           if (data[i]['child'].length > 0) {
             tree = tree + '<dd class="layui-nav-item' + class_itemed + '"><a href="javascript:;">' + data[i]['menu_name'] + '</a>';
           } else {
-            tree = tree + '<dd class="layui-nav-item' + class_itemed + thisclass + '"><a href="<?php echo $this->baseUrl();?>' + data[i]['route'] + '">' + data[i]['menu_name'] + '</a>';
+            tree = tree + '<dd class="layui-nav-item' + class_itemed + thisclass + '"><a href="{$baseUrl}' + data[i]['route'] + '">' + data[i]['menu_name'] + '</a>';
           }
 
         } else { //子菜单
@@ -102,7 +96,7 @@
           if (data[i]['child'].length > 0) {
             tree = tree + '<dd class="' + class_itemed + '"><a href="javascript:;">' + data[i]['menu_name'] + '</a>';
           } else {
-            tree = tree + '<dd class="' + thisclass + '"><a href="<?php echo $this->baseUrl();?>' + data[i]['route'] + '">' + data[i]['menu_name'] + '</a>';
+            tree = tree + '<dd class="' + thisclass + '"><a href="{$baseUrl}' + data[i]['route'] + '">' + data[i]['menu_name'] + '</a>';
           }
 
         }
@@ -129,4 +123,4 @@
 
   });
   </script>
-  <?php $this->endBlock();?>
+  {endBlock}

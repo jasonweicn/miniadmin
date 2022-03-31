@@ -8,7 +8,7 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="format-detection" content="telephone=no">
-  <title><?php echo $this->title;?></title>
+  <title>{$title}</title>
   <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/assets/layui/css/layui.css" media="all">
   <link rel="stylesheet" type="text/css" href="<?php echo $this->baseUrl();?>/css/backend.css" media="all">
 </head>

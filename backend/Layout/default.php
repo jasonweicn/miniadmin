@@ -1,21 +1,21 @@
-<?php echo $this->render(LAYOUT_PATH . '/header.php');?>
+{layout:header}
 
 <!-- side start -->
-<?php echo $this->render(LAYOUT_PATH . '/side.php');?>
+{layout:side}
 <!-- side start -->
 
 <!-- main start -->
-<?php echo $this->_layout->content;?>
+{layout:content}
 <!-- main end -->
 
 <!-- footer start -->
-<?php echo $this->render(LAYOUT_PATH . '/footer.php');?>
+{layout:footer}
 <!-- footer end -->
 
 </div>
-<script src="<?php echo $this->baseUrl();?>/assets/jquery-3.4.1.min.js"></script>
-<script src="<?php echo $this->baseUrl();?>/assets/layui/layui.js"></script>
-<script src="<?php echo $this->baseUrl();?>/js/backend.js"></script>
+<script src="{$baseUrl}/assets/jquery-3.4.1.min.js"></script>
+<script src="{$baseUrl}/assets/layui/layui.js"></script>
+<script src="{$baseUrl}/js/backend.js"></script>
 <script>
 //JavaScript代码区域
 layui.use('element', function () {
@@ -38,7 +38,7 @@ $('#logout').click(function () {
     });
 });
 </script>
-<?php $this->insertBlock('jscode');?>
-<?php $this->insertBlock('side_jscode');?>
+{insertBlock:jscode}
+{insertBlock:side_jscode}
 </body>
 </html>

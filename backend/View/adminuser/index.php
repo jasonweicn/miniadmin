@@ -27,7 +27,7 @@
     <table id="data-list" lay-filter="data-list-event"></table>
   </div>
 </div>
-<?php $this->beginBlock('jscode');?>
+{beginBlock:jscode}
 <script type="text/html" id="statusTpl">
   {{# if(d.disable == 1) { }}
     <span style="color:#FF5722;">{{ d.status }}</span>
@@ -223,4 +223,4 @@ layui.use(['table'], function () {
 });
 
 </script>
-<?php $this->endBlock();?>
+{endBlock:jscode}

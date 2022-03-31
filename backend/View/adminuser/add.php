@@ -44,7 +44,7 @@
     </div>
   </form>
 </div>
-<?php $this->beginBlock('jscode');?>
+{beginBlock:jscode}
 <script>
 layui.use(['form'], function () {
   var form = layui.form;
@@ -74,7 +74,7 @@ layui.use(['form'], function () {
     $('button[name="add_submit"]').addClass('layui-btn-disabled').attr('disabled', 'true');
     $.ajax({
       type: 'post',
-      url: '<?php echo $this->baseUrl();?>/adminuser/save',
+      url: '{$baseUrl}/adminuser/save',
       data: data.field,
       dataType: 'json',
       success: function (data) {
@@ -109,4 +109,4 @@ layui.use(['form'], function () {
 
 });
 </script>
-<?php $this->endBlock();?>
+{endBlock:jscode}
